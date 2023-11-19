@@ -9,7 +9,7 @@ router.post('/novo', async function(req, res, next) {
         
         res.json({salao: salao});
       } catch(e) {
-        res.status(400).json({mensagem: "Falha ao salvar salao" + "       Erro:" + e})
+        res.status(400).json({mensagem: "Falha ao salvar salao" + " Erro:" + e})
       }
 });
 
