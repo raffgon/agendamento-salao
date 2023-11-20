@@ -5,6 +5,7 @@ const port = 5500
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const cookieParser = require('cookie-parser');
 
 
 var IndexRouter = require('./routes/IndexRouter');

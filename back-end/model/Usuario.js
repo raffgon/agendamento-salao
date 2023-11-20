@@ -33,10 +33,24 @@ module.exports = {
             nome_usuario: nome,
             email_usuario: email,
             senha_usuario: senha
-        })
+        });
     },
     getAll: async () => {
-        return await UsuarioModel.findAll()
+        return await UsuarioModel.findAll();
+    },
+    makeAdmin: async (id_usuario) => {
+        try {
+            console.log('id_usuario: ' + id_usuario);
+            const usuario = await UsuarioModel.findByPk(id_usuario);
+            if (!usuario) {
+                throw new Error('Usuário não encontrado');
+            }
+            usuario.is_admin = true;
+            await usuario.save();
+            return usuario;
+        } catch (error) {
+            throw new Error('Falha ao tornar o usuário admin: ' + error.message);
+        } 
     },
     Model: UsuarioModel
 }

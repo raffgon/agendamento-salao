@@ -41,6 +41,10 @@ const AgendamentoModel = sequelize.define('agendamentos', {
     data_agendamento: {
         type: DataTypes.DATE,
         allowNull: false
+    },
+    status_agendamento: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 });
 
@@ -50,12 +54,13 @@ AgendamentoModel.belongsTo(Servico.Model, { foreignKey: 'id_servico', targetKey:
 
 
 module.exports = {
-    novo: async (id_usuario, id_funcionario, id_servico, data_agendamento) => {
+    novo: async (id_usuario, id_funcionario, id_servico, data_agendamento, status_agendamento) => {
         return await AgendamentoModel.create({
             id_usuario: id_usuario,
             id_funcionario: id_funcionario,
             id_servico: id_servico,
-            data_agendamento: data_agendamento
+            data_agendamento: data_agendamento,
+            status_agendamento: status_agendamento
         });
     },
     buscaPorId: async (id_agendamento) => {
