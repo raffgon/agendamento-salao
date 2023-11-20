@@ -13,4 +13,13 @@ router.post('/novo', async function(req, res, next) {
       }
 });
 
+router.get('/listar', async function(req, res, next) {
+    try {
+        let usuarios = await UsuarioModel.getAll();
+        res.json({usuarios: usuarios});
+      } catch(e) {
+        res.status(400).json({mensagem: "Falha ao buscar usuarios" + e})
+      }
+});
+
 module.exports = router;

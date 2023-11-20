@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const {sequelize} = require('../model/bd');
+const sequelize = require('../helpers/bd');
 
 router.get('/install', async function(req, res, next) {
     try {
