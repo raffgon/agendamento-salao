@@ -31,7 +31,12 @@ FuncionarioEspecialidadeModel.belongsTo(Especialidade.Model, { foreignKey: 'id_e
 
 
 module.exports = {
-    novo: async (id_funcionario, id_especialidade) => {
+    novo: async (id_funcionario, id_especialidade) => { 
+        const especialidadeFuncionarioExistente = await FuncionarioEspecialidadeModel.findOne({ where: { id_funcionario: id_funcionario, id_especialidade: id_especialidade } });
+        if(especialidadeFuncionarioExistente){
+            throw new Error('Especialidade do funcionário ja existe');
+        }
+
         return await FuncionarioEspecialidadeModel.create({
             id_funcionario: id_funcionario,
             id_especialidade: id_especialidade

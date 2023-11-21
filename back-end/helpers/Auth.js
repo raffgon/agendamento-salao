@@ -1,9 +1,14 @@
 const jwt = require('jsonwebtoken');
-
+const Usuario = require('../model/Usuario');
 
 module.exports = {
-    verificaAdmin: (req, res, next) => {
-        
+    verificaAdmin: async (req, res, next) => {
+        const usuarioLogado = await Usuario.Model.findOne({ where: { id_usuario: req.cookies.id_usuario } });
+        if (usuarioLogado && usuarioLogado.is_admin) {
+            next();
+        } else {
+            res.status(403).json({ mensagem: 'Você não é um admnistrador para fazer isso.Acesso negado' });
+        }
     },
     validaAcesso: (req, res, next) => {
         try{

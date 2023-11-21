@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 const Salao = require('../model/Salao');
+const Auth = require('../helpers/Auth');
 
-router.post('/novo', async function (req, res, next) {
+router.post('/novo', Auth.validaAcesso, Auth.verificaAdmin, async function (req, res, next) {
   try {
     let salao = await Salao.Model.novo(req.body.id_dono, req.body.nome_salao, req.body.endereco_salao, req.body.fone_salao);
 

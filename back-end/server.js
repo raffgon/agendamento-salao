@@ -3,9 +3,11 @@ const express = require('express')
 const app = express()
 const port = 5500
 
+const cookieParser = require('cookie-parser');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-const cookieParser = require('cookie-parser');
+app.use(cookieParser('321@!#'));
 
 
 var IndexRouter = require('./routes/IndexRouter');

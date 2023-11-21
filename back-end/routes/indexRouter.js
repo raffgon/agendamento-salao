@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 
 const sequelize = require('../helpers/bd');
 const Usuario = require('../model/Usuario');
-const Auth = require('../helpers/Auth');
 
 router.get('/install', async function(req, res, next) {
     try {

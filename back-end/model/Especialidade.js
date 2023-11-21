@@ -15,6 +15,10 @@ const EspecialidadeModel = sequelize.define('especialidades', {
 
 module.exports = {
     novo: async (nome_especialidade) => {
+        const especialidadeExistente = await EspecialidadeModel.findOne({ where: { nome_especialidade: nome_especialidade } });
+        if(especialidadeExistente){
+            throw new Error('Especialidade ja existe');
+        }
         return await EspecialidadeModel.create({
             nome_especialidade: nome_especialidade
         });
