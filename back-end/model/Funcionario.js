@@ -26,6 +26,10 @@ const FuncionarioModel = sequelize.define('funcionarios', {
             model: 'saloes',
             key: 'id_salao'
         }
+    },
+    apelido_funcionario: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 });
 FuncionarioModel.belongsTo(Usuario.Model, { foreignKey: 'id_usuario', targetKey: 'id_usuario' });
@@ -33,14 +37,15 @@ FuncionarioModel.belongsTo(Salao.Model, { foreignKey: 'id_salao', targetKey: 'id
 Salao.Model.hasMany(FuncionarioModel, { foreignKey: 'id_salao', sourceKey: 'id_salao' });
 
 module.exports = {
-    novo: async (id_usuario, id_salao) => {
+    novo: async (id_usuario, id_salao, apelido_funcionario) => {
         const funcionarioExistente = await FuncionarioModel.findOne({ where: { id_usuario: id_usuario } });
         if(funcionarioExistente){
             throw new Error('Funcionário ja existe');
         }
         return await FuncionarioModel.create({
             id_usuario: id_usuario,
-            id_salao: id_salao
+            id_salao: id_salao,
+            apelido_funcionario: apelido_funcionario
         });
     },
     buscaPorId: async (id_funcionario) => {

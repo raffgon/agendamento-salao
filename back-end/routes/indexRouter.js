@@ -18,6 +18,7 @@ router.get('/install', async function(req, res, next) {
 router.post('/login', async function (req, res, next) {
     try {
         const usuario = await Usuario.Model.findOne({ where: { email_usuario: req.body.email_usuario } });
+        console.log('usuario recebido: ' + JSON.stringify(usuario));
         if (!usuario) {
             return res.status(401).json({ mensagem: 'Email não cadastrado' });
         }
@@ -26,10 +27,12 @@ router.post('/login', async function (req, res, next) {
         }
         
         const token = jwt.sign({ usuario: usuario }, '321@!#', {expiresIn: '1000 min'});
-        res.cookie('token', token, {httpOnly: true, secure: true});
-        res.cookie('id_usuario', usuario.id_usuario, { httpOnly: true, secure: true });
+        //res.cookie('token', token, {httpOnly: false , });
+        res.cookie('token', token, {httpOnly: false});
+        res.cookie('id_usuario', usuario.id_usuario, { httpOnly: false });
         res.json({ mensagem: 'Usuario logado', token: token });
     } catch (error) {
+        console.log('Erro de login: ' + error);
         res.status(500).json({ mensagem: 'Erro ao fazer login: ' + error.message });
     }
 })

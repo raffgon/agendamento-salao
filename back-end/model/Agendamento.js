@@ -79,5 +79,41 @@ module.exports = {
             status_agendamento: status_agendamento
         });
     },
+    getAgendamentoByCliente: async (id_usuario) => {
+        const query = `
+            SELECT u.nome_usuario, f.apelido_funcionario, s.nome_servico, h.inicio_horario, h.fim_horario, h.dia_semana_horario, h.status_horario
+            FROM Agendamentos a
+            JOIN Usuarios u ON a.id_usuario = u.id_usuario
+            JOIN Funcionarios f ON a.id_funcionario = f.id_funcionario
+            JOIN Servicos s ON a.id_servico = s.id_servico
+            JOIN Horarios h ON a.id_horario = h.id_horario
+            WHERE u.id_usuario = :id_usuario;
+        `;
+        const result = await sequelize.query(query, {
+            replacements: { id_usuario },
+            type: sequelize.QueryTypes.SELECT
+        });
+        return result;
+    },
+    deleteByAgendamentoCliente: async (id_agendamento, id_usuario, id_usuario_cookie) => {
+        if (id_usuario !== id_usuario_cookie) {
+            throw new Error('Este agendamento nao pertence a este usuario');
+        }
+        const agendamento = await AgendamentoModel.findOne({
+            where: {
+                id_agendamento: id_agendamento,
+                id_usuario: id_usuario
+        }
+        });
+        if (!agendamento) {
+            throw new Error('Agendamento não encontrado');
+        }
+        await AgendamentoModel.destroy({
+        where: {
+            id_agendamento: id_agendamento,
+            id_usuario: id_usuario
+        }
+        });
+    },
     Model: AgendamentoModel
 }

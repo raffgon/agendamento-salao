@@ -8,7 +8,7 @@ const Auth = require('../helpers/Auth');
 
 router.post('/novo', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res, next) {
   try {
-    let funcionario = await Funcionario.novo(req.body.id_usuario, req.body.id_salao);
+    let funcionario = await Funcionario.novo(req.body.id_usuario, req.body.id_salao, req.body.apelido_funcionario);
     res.json({funcionario: funcionario});
   } catch(e) {
     res.status(400).json({mensagem: "Falha ao salvar funcionario. " + e})

@@ -13,6 +13,7 @@ router.post('/login', async function (req, res, next) {
         }
         
         const token = jwt.sign({ id: usuario.id }, 'chave-secreta', {expiresIn: '1 min'});
+        res.send('Usuario logado, seu token: ', { token: token });
         res.json('Usuario logado, seu token: ', { token: token });
     } catch (error) {
         res.status(500).json({ mensagem: 'Erro ao fazer login: ' + error.message });
