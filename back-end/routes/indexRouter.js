@@ -35,7 +35,20 @@ router.post('/login', async function (req, res, next) {
         console.log('Erro de login: ' + error);
         res.status(500).json({ mensagem: 'Erro ao fazer login: ' + error.message });
     }
-})
+});
+
+router.post('/cadastro', async function (req, res, next) {
+    try {
+        const existeUsuario = await Usuario.Model.findOne({ where: { email_usuario: req.body.email_usuario } });
+        if (existeUsuario) {
+            return res.status(400).json({ mensagem: "Já existe um usuário com o mesmo email" });
+        }
+        let usuario = await Usuario.novo(req.body.nome_usuario, req.body.email_usuario, req.body.senha_usuario, req.body.isAdmin || false);
+        res.json({ usuario: usuario });
+    } catch (e) {
+        res.status(400).json({ mensagem: "Falha ao salvar usuário" + e });
+    }
+});
 
 router.get('/', (req, res) => {
     res.send('Bem-vindo à página inicial');

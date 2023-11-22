@@ -16,9 +16,10 @@ router.post('/novo', Auth.validaAcesso, async function(req, res, next) {
   }
 });
 
-router.get('/getAgendamentoPorCliente', Auth.validaAcesso, async function(req, res, next) {
+router.get('/getAgendamentoPorCliente' /*Auth.validaAcesso*/, async function(req, res, next) {
   try {
-    let agendamento = await Agendamento.getAgendamentoByCliente(req.body.id_usuario);
+    //alterado de req.body.id_usuario para req.cookies.id_usuario para usar no front-end
+    let agendamento = await Agendamento.getAgendamentoByCliente(req.cookies.id_usuario);
     res.json({agendamento: agendamento});
   } catch(e) {
     res.status(400).json({mensagem: "Falha ao buscar agendamento " + e})

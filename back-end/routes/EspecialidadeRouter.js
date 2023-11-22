@@ -23,4 +23,13 @@ router.post('/novoServico', Auth.validaAcesso, Auth.verificaAdmin, async functio
   }
 });
 
+router.get('/listar', async function(req, res, next) {
+  try {
+    let especialidades = await Especialidade.Model.findAll();
+    res.json({especialidades: especialidades});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao buscar especialidades " + e})
+  }
+});
+
 module.exports = router;

@@ -1,0 +1,46 @@
+/* CSS */
+#menuLateral {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+#barraLateral {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background-color: #333;
+  transition: all 0.3s ease-in-out;
+}
+
+#menuLateral.collapsed {
+  width: 60px;
+}
+
+#menuLateral.collapsed #barraLateral {
+  width: 0;
+}
+
+#menuLateral.collapsed h2,
+#menuLateral.collapsed button {
+  display: none;
+}
+
+.container {
+  transition: all 0.3s ease-in-out;
+  margin-left: 60px;
+}
+
+#menuLateral.collapsed + .container {
+  margin-left: 0;
+}
+
+.card{
+    width: 100vh;
+    height: 350px;
+}
+
+#container{
+    background-color: aqua;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Agendamentos</title>
+</head>
+<body>
+    <div class="container" id="container" style="padding: 0; margin: 0; min-height: 100vh;">
+        <button type="button" id="btnMenu">☰</button>
+        <div id="menuLateral" class="collapsed">
+          <h2>Agendamentos</h2>
+          <button type="button" id="btnMeusAgendamentos">Meus agendamentos</button>
+          <button type="button" id="btnAgendar">Agendar</button>
+          <button type="button" id="btnLoggout">Loggout</button>
+        </div>
+        <div id="mainContent">
+            <div id="renderContent">
+                    <h1>CONTEUDO</h1>
+            </div>
+        </div>
+    </div>
+    <script>
+        // JavaScript
+        var menuLateral = document.getElementById("menuLateral");
+        var btnMenu = document.getElementById("btnMenu");
+      
+        btnMenu.addEventListener("click", function() {
+          menuLateral.classList.toggle("collapsed");
+        });
+      </script>
+      <script src="agendamentos.js"></script>
+</body>
+</html>

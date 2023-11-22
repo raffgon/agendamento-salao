@@ -9,20 +9,22 @@
   <div class="container" style="padding: 0; margin: 0; min-height: 100vh;">
 
     <div>
-      <h1>Login</h1>
+      <h1>Cadastro</h1>
     </div>
   
     <div>
-      <form id="loginForm">
+      <form id="cadastroForm">
+        <label for="nome">Nome</label>
+        <input type="text" name="nome_usuario" id="nome">
         <label for="email">Email</label>
         <input type="text" name="email_usuario" id="email">
         <label for="senha">Senha</label>
         <input type="password" name="senha_usuario" id="senha">
-        <button id="btnLogin" type="submit">Entrar</button>
+        <button id="btnCadastrar" type="submit" href="/cadastro">Cadastrar</button>
       </form>
     </div>
 
   </div>
-  <script src="login.js"></script>
+  <script src="cadastro.js"></script>
 </body>
 </html>

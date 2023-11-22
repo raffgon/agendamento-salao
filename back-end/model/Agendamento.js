@@ -79,6 +79,8 @@ module.exports = {
             status_agendamento: status_agendamento
         });
     },
+
+    //PERGUNTAR SE PODE USAR QUERYS DIRETAMENTE NO BD
     getAgendamentoByCliente: async (id_usuario) => {
         const query = `
             SELECT u.nome_usuario, f.apelido_funcionario, s.nome_servico, h.inicio_horario, h.fim_horario, h.dia_semana_horario, h.status_horario
