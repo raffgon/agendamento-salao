@@ -83,7 +83,7 @@ module.exports = {
     //PERGUNTAR SE PODE USAR QUERYS DIRETAMENTE NO BD
     getAgendamentoByCliente: async (id_usuario) => {
         const query = `
-            SELECT u.nome_usuario, f.apelido_funcionario, s.nome_servico, h.inicio_horario, h.fim_horario, h.dia_semana_horario, h.status_horario
+            SELECT a.id_agendamento, u.nome_usuario, f.apelido_funcionario, s.nome_servico, h.inicio_horario, h.fim_horario, h.dia_semana_horario, h.status_horario
             FROM Agendamentos a
             JOIN Usuarios u ON a.id_usuario = u.id_usuario
             JOIN Funcionarios f ON a.id_funcionario = f.id_funcionario
@@ -97,8 +97,8 @@ module.exports = {
         });
         return result;
     },
-    deleteByAgendamentoCliente: async (id_agendamento, id_usuario, id_usuario_cookie) => {
-        if (id_usuario !== id_usuario_cookie) {
+    deleteByAgendamentoCliente: async (id_agendamento, id_usuario, id_usuario_logado) => {
+        if (id_usuario !== id_usuario_logado) {
             throw new Error('Este agendamento nao pertence a este usuario');
         }
         const agendamento = await AgendamentoModel.findOne({
@@ -116,6 +116,7 @@ module.exports = {
             id_usuario: id_usuario
         }
         });
+        await Horario.mudarStatus(agendamento.id_horario, 'disponivel');
     },
     Model: AgendamentoModel
 }

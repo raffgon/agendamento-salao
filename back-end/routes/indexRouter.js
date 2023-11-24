@@ -27,10 +27,7 @@ router.post('/login', async function (req, res, next) {
         }
         
         const token = jwt.sign({ usuario: usuario }, '321@!#', {expiresIn: '1000 min'});
-        //res.cookie('token', token, {httpOnly: false , });
-        res.cookie('token', token, {httpOnly: false});
-        res.cookie('id_usuario', usuario.id_usuario, { httpOnly: false });
-        res.json({ mensagem: 'Usuario logado', token: token });
+        res.json({ mensagem: 'Usuario logado', token: token , id_usuario: usuario.id_usuario});
     } catch (error) {
         console.log('Erro de login: ' + error);
         res.status(500).json({ mensagem: 'Erro ao fazer login: ' + error.message });

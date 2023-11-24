@@ -16,29 +16,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    if(req.cookies.id_usuario) {
-        console.log('Usuario ja está logado');
-        res.redirect('/home');
-        return;
-    }
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.get('/home', (req, res) => {
-    if(!req.cookies.id_usuario) {
-        console.log('Usuario nao está logado');
-        res.redirect('/');
-        return;
-    }
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
 app.get('/cadastro', (req, res) => {
-    if(req.cookies.id_usuario) {
-        console.log('Usuario ja está logado');
-        res.redirect('/home');
-        return;
-    }
     res.sendFile(path.join(__dirname, 'public', 'cadastro.html'));
 });
 

@@ -4,6 +4,16 @@ const emailInput = document.getElementById('email');
 const senhaInput = document.getElementById('senha');
 const btnLogin = document.getElementById('btnCadastrar');
 
+document.addEventListener('DOMContentLoaded', function() {
+    const id_usuario = localStorage.getItem('id_usuario');
+    const token = localStorage.getItem('token');
+  
+    if (id_usuario && token) {
+      alert('Usuário ja esta logado');
+      window.location.href = '/home'; // Redirecionar para a rota raiz
+    }
+  });
+
 cadastroForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 

@@ -42,7 +42,7 @@ router.get('/listarHorariosPorId', Auth.validaAcesso, async function(req, res, n
   }
 });
 
-router.get('/listarHorariosDisponiveisPorId', Auth.validaAcesso, async function(req, res, next) {
+router.post('/listarHorariosDisponiveisPorId', /*Auth.validaAcesso,*/ async function(req, res, next) {
   try {
     let horarios = await Horario.getDisponiveisbyId(req.body.id_funcionario);
     res.json({horarios: horarios});
@@ -51,4 +51,12 @@ router.get('/listarHorariosDisponiveisPorId', Auth.validaAcesso, async function(
   }
 });
 
+router.post('/listarFuncionariosPorEspecialidade', async function(req, res, next) {
+  try {
+    let funcionarios = await FuncionarioEspecialidade.getAllByEspecialidade(req.body.id_especialidade);
+    res.json({funcionarios: funcionarios});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao buscar funcionários " + e})
+  }
+})
 module.exports = router;

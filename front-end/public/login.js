@@ -3,6 +3,16 @@ const emailInput = document.getElementById('email');
 const senhaInput = document.getElementById('senha');
 const btnLogin = document.getElementById('btnLogin');
 
+document.addEventListener('DOMContentLoaded', function() {
+    const id_usuario = localStorage.getItem('id_usuario');
+    const token = localStorage.getItem('token');
+
+    if (id_usuario && token) {
+        alert('Usuario ja autenticado');
+        window.location.href = '/home';
+    }
+});
+
 loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -25,10 +35,15 @@ loginForm.addEventListener('submit', async (event) => {
         });
         if (response.ok) {
             const responseData = await response.json();
-            const cookie = responseData.token;
-            document.cookie = `token=${cookie}; path=/`;
-            console.log('Cookie:', document.cookie);
-            window.location.href = '/login';
+            console.log('responseData:', responseData);
+            const id_usuario = responseData.id_usuario;
+            const token = responseData.token;
+            localStorage.setItem('id_usuario', id_usuario);
+            localStorage.setItem('token', token);
+            console.log('token:', localStorage.getItem('token'));
+            console.log('id_usuario:', localStorage.getItem('id_usuario'));
+            alert('Login bem-sucedido!');
+            window.location.href = '/home';
         } else {
             // A resposta não foi bem-sucedida
             const errorData = await response.json();
@@ -38,3 +53,4 @@ loginForm.addEventListener('submit', async (event) => {
         console.log('Erro de solicitação:', error);
     }
 });
+

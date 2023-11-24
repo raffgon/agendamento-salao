@@ -46,5 +46,12 @@ module.exports = {
     buscaPorId: async (id_servico) => {
         return await ServicoModelModel.findByPk(id_servico);
     },
+    getAllByEspecialidade: async (id_especialidade) => {
+        return await ServicoModel.findAll({
+            where: {
+                id_especialidade: id_especialidade
+            }
+        });
+    },
     Model: ServicoModel
 }

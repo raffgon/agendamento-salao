@@ -7,29 +7,61 @@
   <title>Agendamentos</title>
 </head>
 <body>
-    <div class="container" id="container" style="padding: 0; margin: 0; min-height: 100vh;">
-        <button type="button" id="btnMenu">☰</button>
-        <div id="menuLateral" class="collapsed">
-          <h2>Agendamentos</h2>
-          <button type="button" id="btnMeusAgendamentos">Meus agendamentos</button>
-          <button type="button" id="btnAgendar">Agendar</button>
-          <button type="button" id="btnLoggout">Loggout</button>
-        </div>
-        <div id="mainContent">
-            <div id="renderContent">
-                    <h1>CONTEUDO</h1>
+    <div class="container" id="container">
+
+        <nav class="menu-lateral" id="menuLateral">
+
+            <ul>
+                <li class="item-menu">
+                    <a href="#" id="btnMeusAgendamentos">
+                        <span class="icon"><box-icon name='calendar' size="lg"></box-icon></span>
+                        <span class="text-link"><strong> Agendamentos</strong></span>
+                    </a>
+                </li>
+                <li class="item-menu">
+                    <a href="#" id="btnAgendar">
+                        <span class="icon"><box-icon name='calendar-plus' size="lg"></box-icon></span>
+                        <span class="text-link"><strong> Agendar</strong></span>
+                    </a>
+                </li>
+                <li class="item-menu">
+                    <a href="#" id="btnLoggout">
+                        <span class="icon"><box-icon name='exit' rotate='180' size="lg"></box-icon></span>
+                        <span class="text-link"><strong>Sair</strong></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content-agendamentos" id="mainContent">
+            <div class="main-content-header" id="mainContentHeader"></div>
+            <div class="render-content" id="renderContent">
+                <div class="info">
+                    <h1>Projeto<br>de<br> Programação<br>para<br>Dispositivos <br>Móveis</h1>
+                    <ul>
+                        <li><strong>Aluno: </strong>Rafael Gonçalves Martins</li>
+                        <li><strong>Tecnologias: </strong> HTML, CSS, JavaScript, NodeJs e PostgreSQL</li>
+                        <li><strong>Descrição do Projeto:</strong> <br>O projeto consiste em um simples <br>sistema para consultar a agendar seus horarios em um salão de beleza ficticio.</li>
+                        <li><strong>Requisitos:</strong>
+                            <ul>
+                                <li>Criar conta</li>
+                                <li>Fazer login</li>
+                                <li>Realizar um agendamento</li>
+                                <li>Consultar agendamentos</li>
+                                <li>Cancelar agendamentos</li>
+                            </ul>
+                        </li>
+                        <li><strong>Diagramas:</strong>
+                            <ul>
+                                <li><strong>Diagrama do banco: </strong><img src="/diagramaBD.png" alt="Diagrama do banco de dados" style="max-width: -webkit-fill-available"></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    <script>
-        // JavaScript
-        var menuLateral = document.getElementById("menuLateral");
-        var btnMenu = document.getElementById("btnMenu");
-      
-        btnMenu.addEventListener("click", function() {
-          menuLateral.classList.toggle("collapsed");
-        });
-      </script>
-      <script src="agendamentos.js"></script>
+    <script src="agendamentos.js"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 </body>
 </html>

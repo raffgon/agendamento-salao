@@ -32,4 +32,13 @@ router.get('/listar', async function(req, res, next) {
   }
 });
 
+router.post('/listarServicosPorEspecialidade', async function(req, res, next) {
+  try {
+    let servicos = await Servico.getAllByEspecialidade(req.body.id_especialidade);
+    res.json({servicos: servicos});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao buscar servicos " + e})
+  }
+});
+
 module.exports = router;

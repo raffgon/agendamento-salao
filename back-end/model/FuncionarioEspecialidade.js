@@ -26,8 +26,8 @@ const FuncionarioEspecialidadeModel = sequelize.define('funcionarios_especialida
 });
 
 FuncionarioEspecialidadeModel.belongsTo(Funcionario.Model, { foreignKey: 'id_funcionario', targetKey: 'id_funcionario' });
-FuncionarioEspecialidadeModel.belongsTo(Especialidade.Model, { foreignKey: 'id_especialidade', targetKey: 'id_especialidade' });
-
+Funcionario.Model.belongsToMany(Especialidade.Model, { through: FuncionarioEspecialidadeModel, foreignKey: 'id_funcionario' });
+Especialidade.Model.belongsToMany(Funcionario.Model, { through: FuncionarioEspecialidadeModel, foreignKey: 'id_especialidade' });
 
 
 module.exports = {
@@ -44,5 +44,19 @@ module.exports = {
     },
     buscaPorIdFuncionario: async (id_funcionario) => {
         return await FuncionarioEspecialidadeModel.findByPk(id_funcionario);
-    }
+    },
+    getAllByEspecialidade: async (id_especialidade) => {
+        const query = `
+        SELECT f.id_funcionario ,f.apelido_funcionario
+        FROM Funcionarios_Especialidades fe
+        JOIN Funcionarios f ON fe.id_funcionario = f.id_funcionario
+        WHERE fe.id_especialidade = :id_especialidade;
+    `;
+    const result = await sequelize.query(query, {
+        replacements: { id_especialidade },
+        type: sequelize.QueryTypes.SELECT
+    });
+        return result;
+    },
+    model: FuncionarioEspecialidadeModel
 }
