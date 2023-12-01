@@ -65,19 +65,54 @@ module.exports = {
     buscaPorId: async (id_agendamento) => {
         return await AgendamentoModel.findByPk(id_agendamento);
     },
-    novo: async (id_usuario, id_funcionario, id_servico, id_horario, status_agendamento) => {   
-        const agendamentoExistente = await AgendamentoModel.findOne({ where: { id_usuario, id_funcionario, id_horario}});
-        if(agendamentoExistente){
-            throw new Error('Conflito de horário');
-        }
-        Horario.mudarStatus(id_horario, 'indisponivel');
-        return await AgendamentoModel.create({
-            id_usuario: id_usuario,
-            id_funcionario: id_funcionario,
-            id_servico: id_servico,
-            id_horario: id_horario,
-            status_agendamento: status_agendamento
+    novo: async (id_usuario, id_funcionario, id_servico, id_horario, status_agendamento) => {
+        const agendamentoExistente = await AgendamentoModel.findOne({
+        where: { id_usuario, id_funcionario, id_servico, id_horario, status_agendamento },
         });
+        
+        if (agendamentoExistente) {
+        throw new Error('Agendamento já existe');
+        }
+        
+        const [usuarioExistente, funcionarioExistente, servicoExistente, horarioExistente] = await Promise.all([
+        Usuario.Model.findByPk(id_usuario),
+        Funcionario.Model.findByPk(id_funcionario),
+        Servico.Model.findByPk(id_servico),
+        Horario.Model.findByPk(id_horario),
+        ]);
+        
+        if (!usuarioExistente) {
+        throw new Error('Usuário não encontrado');
+        }
+        
+        if (!funcionarioExistente) {
+        throw new Error('Funcionário não encontrado');
+        }
+        
+        if (!servicoExistente) {
+        throw new Error('Serviço não encontrado');
+        }
+        
+        if (!horarioExistente) {
+        throw new Error('Horário não encontrado');
+        }
+        
+        if (horarioExistente.status_horario !== 'disponivel') {
+        throw new Error('Horário indisponível');
+        }
+        
+        await Horario.mudarStatus(id_horario, 'indisponivel');
+        
+        return await AgendamentoModel.create({
+        id_usuario: id_usuario,
+        id_funcionario: id_funcionario,
+        id_servico: id_servico,
+        id_horario: id_horario,
+        status_agendamento: status_agendamento,
+        });
+    },
+    listar: async () => {
+        return await AgendamentoModel.findAll();
     },
 
     //PERGUNTAR SE PODE USAR QUERYS DIRETAMENTE NO BD
@@ -97,24 +132,92 @@ module.exports = {
         });
         return result;
     },
-    deleteByAgendamentoCliente: async (id_agendamento, id_usuario, id_usuario_logado) => {
-        if (id_usuario !== id_usuario_logado) {
-            throw new Error('Este agendamento nao pertence a este usuario');
-        }
+    excluir: async (id_agendamento) => {
         const agendamento = await AgendamentoModel.findOne({
             where: {
-                id_agendamento: id_agendamento,
-                id_usuario: id_usuario
+                id_agendamento: id_agendamento
         }
         });
         if (!agendamento) {
             throw new Error('Agendamento não encontrado');
         }
         await AgendamentoModel.destroy({
-        where: {
-            id_agendamento: id_agendamento,
-            id_usuario: id_usuario
+            where: {
+                id_agendamento: id_agendamento
+            }
+        });
+        await Horario.mudarStatus(agendamento.id_horario, 'disponivel');
+    },
+    editar: async (id_agendamento, novoAgendamento) => {
+        const agendamento = await AgendamentoModel.findOne({
+            where: {
+                id_agendamento: id_agendamento
+            }
+        });
+        if (!agendamento) {
+            throw new Error('Agendamento não encontrado');
         }
+
+        const [usuarioExistente, funcionarioExistente, servicoExistente, horarioExistente] = await Promise.all([
+            Usuario.Model.findByPk(novoAgendamento.id_usuario),
+            Funcionario.Model.findByPk(novoAgendamento.id_funcionario),
+            Servico.Model.findByPk(novoAgendamento.id_servico),
+            Horario.Model.findByPk(novoAgendamento.id_horario),
+        ]);
+            
+        if (!usuarioExistente) {
+            throw new Error('Novo Usuário não encontrado');
+        }
+        
+        if (!funcionarioExistente) {
+            throw new Error('Novo Funcionário não encontrado');
+        }
+        
+        if (!servicoExistente) {
+            throw new Error('Novo Serviço não encontrado');
+        }
+        
+        if (!horarioExistente) {
+            throw new Error('Novo Horário não encontrado');
+        }
+        
+        if (horarioExistente.status_horario !== 'disponivel') {
+            throw new Error('Novo Horário indisponível');
+        }
+
+        if (agendamento.status_agendamento === 'cancelado') {
+            throw new Error('Agendamento ja finzalizado, não pode ser editado');
+        }
+        await AgendamentoModel.update({
+            id_usuario: novoAgendamento.id_usuario,
+            id_funcionario: novoAgendamento.id_funcionario,
+            id_servico: novoAgendamento.id_servico,
+            id_horario: novoAgendamento.id_horario,
+            status_agendamento: novoAgendamento.status_agendamento
+        }, {
+            where: {
+                id_agendamento: id_agendamento
+            }
+        });
+    },
+    cancelar: async (id_agendamento) => {
+        const agendamento = await AgendamentoModel.findOne({
+            where: {
+                id_agendamento: id_agendamento
+            }
+        });
+        if (!agendamento) {
+            throw new Error('Agendamento não encontrado');
+        }
+        if (agendamento.status_agendamento === 'cancelado') {
+            throw new Error('Agendamento já esta cancelado');
+        }
+        await AgendamentoModel.update({
+            status_agendamento: 'cancelado'
+        }, {
+            where: {
+                id_agendamento: id_agendamento
+            }
         });
         await Horario.mudarStatus(agendamento.id_horario, 'disponivel');
     },

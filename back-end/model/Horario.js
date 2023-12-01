@@ -66,6 +66,9 @@ module.exports = {
             status_horario: status_horario
         });
     },
+    listar: async () => {
+        return await HorarioModel.findAll();
+    },
     mudarStatus: async (id_horario, status_horario) => {
         return await HorarioModel.update({
             status_horario: status_horario

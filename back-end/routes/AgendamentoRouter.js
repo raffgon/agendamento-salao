@@ -1,13 +1,20 @@
 var express = require('express');
 var router = express.Router();
-
+const AgendamentoEditarSchema = require('../validators/AgendamentoValidators/EditarAgendamentoValidator');
+const AgendamentoNovoSchema = require('../validators/AgendamentoValidators/NovoAgendamentoValidator');
+const GenericIdSchema = require('../validators/GenericIdValidator');
 const Agendamento = require('../model/Agendamento');
 const Auth = require('../helpers/Auth');
 const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
 
-router.post('/novo', /*Auth.validaAcesso ,*/ async function(req, res, next) {
+router.post('/novo', Auth.validaAcesso , async function(req, res, next) {
+  const {error} = AgendamentoNovoSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
   try {
     let agendamento = await Agendamento.novo(req.body.id_usuario, req.body.id_funcionario, req.body.id_servico, req.body.id_horario, req.body.status_agendamento);
     res.json({agendamento: agendamento});
@@ -16,7 +23,21 @@ router.post('/novo', /*Auth.validaAcesso ,*/ async function(req, res, next) {
   }
 });
 
-router.post('/getAgendamentoPorCliente' /*Auth.validaAcesso*/, async function(req, res, next) {
+router.get('/listar', Auth.validaAcesso, async function(req, res, next) {
+  try {
+    let agendamentos = await Agendamento.listar();
+    res.json({agendamentos: agendamentos});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao buscar agendamento " + e})
+  }
+})
+
+router.post('/getAgendamentoPorCliente', Auth.validaAcesso, async function(req, res, next) {
+  const {error} = GenericIdSchema.validate(req.body);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
   try {
     //alterado de req.body.id_usuario para req.cookies.id_usuario para usar no front-end
     let agendamento = await Agendamento.getAgendamentoByCliente(req.body.id_usuario);
@@ -26,15 +47,56 @@ router.post('/getAgendamentoPorCliente' /*Auth.validaAcesso*/, async function(re
   }
 });
 
-router.delete('/excluir', /*Auth.validaAcesso, Auth.verificaAdmin,*/ async function(req, res, next) {
+router.delete('/excluir', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res, next) {
+  const {error} = GenericIdSchema.validate(req.body);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
   try {
-    console.log(req.body.id_agendamento, req.body.id_usuario, req.body.id_usuario_logado)
-    await Agendamento.deleteByAgendamentoCliente(req.body.id_agendamento, req.body.id_usuario, req.body.id_usuario_logado);
+    await Agendamento.excluir(req.body.id_agendamento);
     res.json('Agendamento excluido com sucesso');
   } catch(e) {
     res.status(400).json({mensagem: "Falha ao excluir agendamento " + e})
   }
 });
 
+router.put('/cancelar', Auth.validaAcesso, async function(req, res, next) {
+  const {error} = GenericIdSchema.validate(req.body);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    await Agendamento.cancelar(req.body.id_agendamento);
+    let agendamento = await Agendamento.buscaPorId(req.body.id_agendamento);
+    res.json({mensagem: "Agendamento cancelado com sucesso", agendamento: agendamento});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao cancelar agendamento " + e})
+  }
+});
+
+router.put('/editar', Auth.validaAcesso, async function(req, res, next) {
+  //RETIRAR DUVIDAS
+  /*
+  const {error} = GenericIdSchema.validate(req.body.id_agendamento);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  */
+  const {error} = AgendamentoEditarSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    await Agendamento.editar(req.body.id_agendamento, req.body.novo_agendamento);
+    let agendamento = await Agendamento.buscaPorId(req.body.id_agendamento);
+    res.json({mensagem: "Agendamento editado com sucesso", agendamentAntigo: agendamento, agendamentoNovo: req.body.novo_agendamento});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao editar agendamento " + e})
+  }
+});
 
 module.exports = router;

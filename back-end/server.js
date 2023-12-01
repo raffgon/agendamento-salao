@@ -1,5 +1,5 @@
 const express = require('express')
-const cors = require('cors')
+//const cors = require('cors')
 
 const app = express()
 const port = 5500
@@ -7,13 +7,15 @@ const port = 5500
 const cookieParser = require('cookie-parser');
 
 //apenas para o trabalho de mobile
+/*
 app.use(cors({
     origin: 'http://localhost:5501',
     credentials: true
   }));
+*/
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser('321@!#'));
+//app.use(cookieParser('321@!#'));
 
 
 var IndexRouter = require('./routes/IndexRouter');

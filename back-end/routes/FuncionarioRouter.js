@@ -58,5 +58,14 @@ router.post('/listarFuncionariosPorEspecialidade', async function(req, res, next
   } catch(e) {
     res.status(400).json({mensagem: "Falha ao buscar funcionários " + e})
   }
+});
+
+router.get('/listarTodosHorarios', async function (req, res, next) {
+  try {
+    let horarios = await Horario.listar();
+    res.json({ horarios: horarios });
+  } catch (e) {
+    res.status(400).json({ mensagem: "Falha ao buscar horários" + e })
+  }
 })
 module.exports = router;
