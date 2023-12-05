@@ -32,8 +32,6 @@ const ServicoModel = sequelize.define('servicos', {
     }
 });
 
-ServicoModel.belongsTo(Especialidade.Model, { foreignKey: 'id_especialidade', targetKey: 'id_especialidade' });
-
 module.exports = {
     novo: async (id_especialidade, nome_servico, custo_servico, duracao_servico) => {
         return await ServicoModel.create({
@@ -44,9 +42,13 @@ module.exports = {
         });
     },
     buscaPorId: async (id_servico) => {
-        return await ServicoModelModel.findByPk(id_servico);
+        return await ServicoModel.findByPk(id_servico);
     },
     getAllByEspecialidade: async (id_especialidade) => {
+        const especialidadeExistente = await Especialidade.Model.findByPk(id_especialidade);
+        if (!especialidadeExistente) {
+            throw new Error('Especialidade inexistente');
+        }
         return await ServicoModel.findAll({
             where: {
                 id_especialidade: id_especialidade

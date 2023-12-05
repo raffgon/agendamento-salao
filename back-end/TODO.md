@@ -22,11 +22,10 @@
 ## Usuario
 - [x] /novo (CRUD)
 - [x] /listar (CRUD)
-- [ ] /makeAdmin
-- [ ] /editar (CRUD) (a implementar)
-- [ ] /excluir (CRUD) (a implementar)
-- [ ] /excluirAdm (a implementar)
-- [ ] /retiraAdmin (a implementar)
+- [x] /makeAdmin
+- [x] /editar (CRUD) (a implementar)
+- [x] /excluir (CRUD) (a implementar)
+- [x] /retiraAdmin (a implementar)
 
 ## Salao
 - [ ] /novo (CRUD)
@@ -35,23 +34,23 @@
 - [ ] /listar (CRUD) (a implementar)
 
 ## Funcionario
-- [ ] /novo (CRUD)
-- [ ] /novaEspecialidade
-- [ ] /novoHorario
-- [ ] /listarHorariosPorId
-- [ ] /listarHorariosDisponiveisPorId
-- [ ] /listarFuncionariosPorEspecialidade
-- [ ] /excluir (CRUD) (a implementar)
-- [ ] /editar (CRUD) (a implementar)
-- [ ] /listar (CRUD) (a implementar)
+- [x] /novo (CRUD)
+- [x] /novaEspecialidade
+- [x] /novoHorario
+- [x] /listarHorariosPorId
+- [x] /listarHorariosDisponiveisPorId
+- [x] /listarFuncionariosPorEspecialidade
+- [x] /excluir (CRUD) (a implementar)
+- [x] /editar (CRUD) (a implementar)
+- [x] /listar (CRUD) (a implementar)
  
 ## Especialidade
-- [ ] /novo (CRUD)
-- [ ] /novoServico
-- [ ] /listar (CRUD)
-- [ ] /listarServicosPorEspecialidade
+- [x] /novo (CRUD)
+- [x] /novoServico
+- [x] /listar (CRUD)
+- [x] /listarServicosPorEspecialidade
 - [ ] /excluir (CRUD) (a implementar)
-- [ ] /editar (CRUD) (a implementar)
+- [x] /editar (CRUD) (a implementar)
 
 ## Index
 - [x] AuthRouter

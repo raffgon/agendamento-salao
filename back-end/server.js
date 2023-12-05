@@ -1,12 +1,13 @@
 const express = require('express')
 //const cors = require('cors')
 
+require('dotenv').config();
+
 const app = express()
-const port = 5500
+const port = process.env.SERVER_PORT;
 
-const cookieParser = require('cookie-parser');
 
-//apenas para o trabalho de mobile
+//cors utilizado apenas para o trabalho de mobile
 /*
 app.use(cors({
     origin: 'http://localhost:5501',
@@ -15,8 +16,6 @@ app.use(cors({
 */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(cookieParser('321@!#'));
-
 
 var IndexRouter = require('./routes/IndexRouter');
 var SalaoRouter = require('./routes/SalaoRouter');

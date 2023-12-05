@@ -1,6 +1,9 @@
 const {DataTypes} = require("sequelize");
 const sequelize = require("../helpers/bd");
 
+const Servico = require("./Servico");
+const Agendamento = require("./Agendamento");
+
 const EspecialidadeModel = sequelize.define('especialidades', {
     id_especialidade: {
         type: DataTypes.INTEGER,
@@ -26,5 +29,35 @@ module.exports = {
     buscaPorId: async (id_especialidade) => {
         return await EspecialidadeModel.findByPk(id_especialidade);
     },
+    editar: async (id_especialidade, nome_especialidade) => {
+        const especialidade = await EspecialidadeModel.findByPk(id_especialidade);
+        if (!especialidade) {
+            throw new Error('Especialidade não encontrada.');
+        }
+        return await especialidade.update({
+            nome_especialidade: nome_especialidade
+        })
+    },
+    /*excluir: async (id_especialidade) => {
+        try {
+            const especialidade = await EspecialidadeModel.findByPk(id_especialidade);
+            if (!especialidade) {
+                throw new Error('Especialidade não encontrada.');
+            }
+            await Agendamento.Model.destroy({
+                where: {
+                    
+                }
+            })
+            await Servico.Model.destroy({
+                where: {
+                    id_especialidade: id_especialidade
+                }
+            });
+            await especialidade.destroy();
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },*/
     Model: EspecialidadeModel
 }

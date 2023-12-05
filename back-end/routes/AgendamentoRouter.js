@@ -5,9 +5,8 @@ const AgendamentoNovoSchema = require('../validators/AgendamentoValidators/NovoA
 const GenericIdSchema = require('../validators/GenericIdValidator');
 const Agendamento = require('../model/Agendamento');
 const Auth = require('../helpers/Auth');
-const cookieParser = require('cookie-parser');
 
-router.use(cookieParser());
+const Paginacao = require('../helpers/Paginacao');
 
 router.post('/novo', Auth.validaAcesso , async function(req, res, next) {
   const {error} = AgendamentoNovoSchema.validate(req.body, { abortEarly: false });
@@ -26,7 +25,10 @@ router.post('/novo', Auth.validaAcesso , async function(req, res, next) {
 router.get('/listar', Auth.validaAcesso, async function(req, res, next) {
   try {
     let agendamentos = await Agendamento.listar();
-    res.json({agendamentos: agendamentos});
+    let pagina = req.query.pagina;
+    let limite = req.query.limite;
+    const resultado = Paginacao.paginar(agendamentos, pagina, limite);
+    res.json({agendamentos: resultado});
   } catch(e) {
     res.status(400).json({mensagem: "Falha ao buscar agendamento " + e})
   }

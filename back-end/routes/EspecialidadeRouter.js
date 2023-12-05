@@ -5,7 +5,20 @@ const Especialidade = require('../model/Especialidade');
 const Servico = require('../model/Servico');
 const Auth = require('../helpers/Auth');
 
-router.post('/novo', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res, next) {
+const GenericIdSchema = require('../validators/GenericIdValidator');
+
+const NovaEspecialidadeSchema = require('../validators/EspecialidadeValidators/NovaEspecialidadeValidator');
+
+const EditarEspecialidadeSchema = require('../validators/EspecialidadeValidators/EditarEspecialidadeValidator');
+
+const NovoServicoSchema = require('../validators/EspecialidadeValidators/NovoServicoValidator');
+
+router.post('/novo', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res) {
+  const {error} = NovaEspecialidadeSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
   try {
     let especialidade = await Especialidade.novo(req.body.nome_especialidade);
     res.json({especialidade: especialidade});
@@ -14,7 +27,12 @@ router.post('/novo', Auth.validaAcesso, Auth.verificaAdmin, async function(req, 
   }
 });
 
-router.post('/novoServico', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res, next) {
+router.post('/novoServico', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res) {
+  const {error} = NovoServicoSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
   try {
     let servico = await Servico.novo(req.body.id_especialidade, req.body.nome_servico, req.body.custo_servico, req.body.duracao_servico);
     res.json({servico: servico});
@@ -23,7 +41,7 @@ router.post('/novoServico', Auth.validaAcesso, Auth.verificaAdmin, async functio
   }
 });
 
-router.get('/listar', async function(req, res, next) {
+router.get('/listar', async function(req, res) {
   try {
     let especialidades = await Especialidade.Model.findAll();
     res.json({especialidades: especialidades});
@@ -32,7 +50,12 @@ router.get('/listar', async function(req, res, next) {
   }
 });
 
-router.post('/listarServicosPorEspecialidade', async function(req, res, next) {
+router.get('/listarServicosPorEspecialidade', async function(req, res) {
+  const {error} = GenericIdSchema.validate(req.body);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
   try {
     let servicos = await Servico.getAllByEspecialidade(req.body.id_especialidade);
     res.json({servicos: servicos});
@@ -40,5 +63,42 @@ router.post('/listarServicosPorEspecialidade', async function(req, res, next) {
     res.status(400).json({mensagem: "Falha ao buscar servicos " + e})
   }
 });
+
+/*
+DIFICULDADE NA IMPLEMENTAÇÃO DE DELETAR ESPECIALIDADE POIS ESTA RELACIONADA COM MUITAS TABELAS
+
+router.delete('/excluir', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res) {
+  const {error} = GenericIdSchema.validate(req.body);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    let especialidadeExcluida = await Especialidade.Model.findOne({where: {id_especialidade: req.body.id_especialidade}});
+    await Especialidade.excluir(req.body.id_especialidade);
+    res.json({ mensagem: "Especialidade escluida com sucesso", especialidade: especialidadeExcluida });
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao excluir especialidade " + e})
+  }
+})*/
+
+router.put('/editar', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res) {
+  /*TESTE DE VERIFICAÇÃO DE ESTRUTURA DO JSON
+  if(req.body.id_especialidade == undefined || req.body.nome_especialidade){
+    return res.status(400).json({ mensagem: "Requisição incompleta" });
+  }
+  */
+  const {error} = EditarEspecialidadeSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    let especialidade = await Especialidade.editar(req.body.id_especialidade, req.body.nome_especialidade);
+    res.json({ mensagem: "Especialidade editada com sucesso", especialidade: especialidade });
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao editar especialidade " + e})
+  }
+})
 
 module.exports = router;

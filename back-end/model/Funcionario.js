@@ -51,5 +51,39 @@ module.exports = {
     buscaPorId: async (id_funcionario) => {
         return await FuncionarioModel.findByPk(id_funcionario);
     },
+    excluir: async (id_funcionario) => {
+        const funcionario = await FuncionarioModel.findOne({ where: { id_funcionario: id_funcionario } });
+        if(!funcionario){
+            throw new Error('Funcionário inexistente');
+        }
+        return await FuncionarioModel.destroy({ where: { id_funcionario: id_funcionario } });    
+    },
+
+    editar: async (id_funcionario, novoFuncionario) => {
+        try {
+            const funcionario = await FuncionarioModel.findOne({ where: { id_funcionario: id_funcionario } });
+            if(!funcionario){
+                throw new Error('Funcionário inexistente');
+            }
+            const salao = await Salao.Model.findOne({ where: { id_salao: novoFuncionario.id_salao } });
+            if(!salao){
+                throw new Error('Salão inexistente'); 
+            }
+
+            await funcionario.update({
+                id_salao: novoFuncionario.id_salao,
+                apelido_funcionario: novoFuncionario.apelido_funcionario
+            }, {
+                where: { id_funcionario: id_funcionario }
+            })
+            return funcionario;
+        } catch (error) {
+            throw new Error(error)
+        }
+    },
+    listar: async () => {
+        return await FuncionarioModel.findAll();
+    },
+    
     Model: FuncionarioModel
 }

@@ -3,11 +3,14 @@ const Usuario = require('../model/Usuario');
 
 module.exports = {
     verificaAdmin: async (req, res, next) => {
-        const usuarioLogado = await Usuario.Model.findOne({ where: { id_usuario: req.cookies.id_usuario } });
+        if(req.headers.usuario_logado == undefined){
+            return res.status(401).json({ mensagem: 'Nenhum usuário logado. Acesso negado' });
+        }
+        const usuarioLogado = await Usuario.Model.findOne({ where: { id_usuario: req.headers.usuario_logado } });
         if (usuarioLogado && usuarioLogado.is_admin) {
             next();
         } else {
-            res.status(403).json({ mensagem: 'Você não é um admnistrador para fazer isso.Acesso negado' });
+            res.status(403).json({ mensagem: 'Você não é um admnistrador para fazer isso. Acesso negado' });
         }
     },
     validaAcesso: (req, res, next) => {
@@ -26,7 +29,7 @@ module.exports = {
                 }
             })
         } catch(e){
-
+            return res.status(401).json({ mensagem: 'Ocorreu algum erro com a autenticação. ' + e });
         }
     }
 }
