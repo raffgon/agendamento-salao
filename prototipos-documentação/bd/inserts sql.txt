@@ -1,0 +1,59 @@
+-- Segunda-feira
+INSERT INTO horarios (id_funcionario, dia_semana_horario, inicio_horario, fim_horario, status_horario, "createdAt", "updatedAt")
+SELECT
+    1 as id_funcionario,
+    'segunda' as dia_semana_horario,
+    generate_series('2023-12-25T08:00:00'::timestamp, '2023-12-25T17:00:00'::timestamp, interval '1 hour') as inicio_horario,
+    generate_series('2023-12-25T09:00:00'::timestamp, '2023-12-25T18:00:00'::timestamp, interval '1 hour') as fim_horario,
+    'disponivel' as status_horario,
+    current_timestamp as "createdAt",
+    current_timestamp as "updatedAt"
+LIMIT 5;
+
+-- Terça-feira
+INSERT INTO horarios (id_funcionario, dia_semana_horario, inicio_horario, fim_horario, status_horario, "createdAt", "updatedAt")
+SELECT
+    1 as id_funcionario,
+    'terca' as dia_semana_horario,
+    generate_series('2023-12-26T08:00:00'::timestamp, '2023-12-26T17:00:00'::timestamp, interval '1 hour') as inicio_horario,
+    generate_series('2023-12-26T09:00:00'::timestamp, '2023-12-26T18:00:00'::timestamp, interval '1 hour') as fim_horario,
+    'disponivel' as status_horario,
+    current_timestamp as "createdAt",
+    current_timestamp as "updatedAt"
+LIMIT 5;
+
+-- Quarta-feira
+INSERT INTO horarios (id_funcionario, dia_semana_horario, inicio_horario, fim_horario, status_horario, "createdAt", "updatedAt")
+SELECT
+    1 as id_funcionario,
+    'quarta' as dia_semana_horario,
+    generate_series('2023-12-27T08:00:00'::timestamp, '2023-12-27T17:00:00'::timestamp, interval '1 hour') as inicio_horario,
+    generate_series('2023-12-27T09:00:00'::timestamp, '2023-12-27T18:00:00'::timestamp, interval '1 hour') as fim_horario,
+    'disponivel' as status_horario,
+    current_timestamp as "createdAt",
+    current_timestamp as "updatedAt"
+LIMIT 5;
+
+-- Quinta-feira
+INSERT INTO horarios (id_funcionario, dia_semana_horario, inicio_horario, fim_horario, status_horario, "createdAt", "updatedAt")
+SELECT
+    1 as id_funcionario,
+    'quinta' as dia_semana_horario,
+    generate_series('2023-12-28T08:00:00'::timestamp, '2023-12-28T17:00:00'::timestamp, interval '1 hour') as inicio_horario,
+    generate_series('2023-12-28T09:00:00'::timestamp, '2023-12-28T18:00:00'::timestamp, interval '1 hour') as fim_horario,
+    'disponivel' as status_horario,
+    current_timestamp as "createdAt",
+    current_timestamp as "updatedAt"
+LIMIT 5;
+
+-- Sexta-feira
+INSERT INTO horarios (id_funcionario, dia_semana_horario, inicio_horario, fim_horario, status_horario, "createdAt", "updatedAt")
+SELECT
+    1 as id_funcionario,
+    'sexta' as dia_semana_horario,
+    generate_series('2023-12-29T08:00:00'::timestamp, '2023-12-29T17:00:00'::timestamp, interval '1 hour') as inicio_horario,
+    generate_series('2023-12-29T09:00:00'::timestamp, '2023-12-29T18:00:00'::timestamp, interval '1 hour') as fim_horario,
+    'disponivel' as status_horario,
+    current_timestamp as "createdAt",
+    current_timestamp as "updatedAt"
+LIMIT 5;

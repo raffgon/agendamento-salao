@@ -1,0 +1,377 @@
+/* CSS */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: rgb(239, 118, 122);
+    border-radius: 20px;
+}
+
+.container {
+    display: flex;
+    width: 355px; /* 100% da largura da janela do navegador */
+    height: 680px; /* 100% da altura da janela do navegador */
+    align-self: center;
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
+    border: 2px solid black;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    background-color: rgb(156, 233, 217);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+  .footer {
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 100%;
+  }
+
+.loginForm{
+    background-color: rgb(35, 240, 199);
+    min-width: 100%;
+    padding: 15px;
+    border-radius: 30px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.loginForm h1{
+    text-align: center;
+    font-size: 36px;
+}
+
+.loginForm h2{
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.loginForm .loginBox{
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+    position: relative;
+
+}
+
+.loginBox input{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid black;
+    border-radius: 40px;
+    font-size: 16px;
+    color: black;
+    padding: 20px 45px 20px 20px;
+}
+
+.loginBox input::placeholder{
+    color: black;
+
+}
+
+.loginBox box-icon{
+ position: absolute;
+ right: 20px;
+ top: 50%;
+ transform: translateY(-50%);
+ font-size: 20px;
+}
+
+.loginForm button{
+    width: 100%;
+    height: 45px;
+    background: #069d83;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.container a{
+    margin-top: 20px;
+}
+
+nav.menu-lateral{
+    width: 55px;
+    height: 100%;
+    background-color: rgb(35, 240, 199);
+    padding: 20px 0px 0px 0px;
+    position: absolute;
+    border-radius: 8px 0px 0 8px;
+    left: 0;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    transition: width 0.5s;
+}
+
+.btn-expandir{
+    width: 100%;
+    padding-left: 10px;
+}
+
+.btn-expandir box-icon{
+    color: white;
+}
+
+ul{
+    height: 100%;
+    list-style-type: none;
+}
+
+ul li.item-menu a{
+    color: black;
+    text-decoration: none;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+ul li.item-menu a .text-link{
+    display: none;
+}
+
+ul li.item-menu a .icon{
+    margin-left: 3px;
+}
+
+ul li.item-menu :hover{
+    background: rgb(8, 150, 121);
+}
+
+ul li.item-menu {
+    transition: 1s;
+}
+
+nav.menu-lateral:hover{
+    width: 200px;
+}
+
+nav.menu-lateral:hover ul li.item-menu a .text-link {
+    display: block;
+}
+
+.main-content-agendamentos{
+    width: 110%;
+    height: 100%;
+    overflow-y: scroll;
+    margin-left: 145px;
+    display: flex;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    flex-direction: column;
+}
+
+.main-content-agendamentos::-webkit-scrollbar {
+    width: 0; /* Para navegadores que suportam */
+    height: 0; /* Para navegadores que suportam */
+}
+
+.main-content-agendamentos #mainContentHeader{
+    margin: 30px 4px 20px 0px;
+}
+
+.main-content-agendamentos #renderContent .card-agendamento {
+    width: 76%;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgba(2, 78, 68, 0.6);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+}
+
+.main-content-agendamentos #renderContent .card-agendamento div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.main-content-agendamentos #renderContent .card-agendamento button {
+    width: 33%;
+    height: 20px;
+    background: tomato;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 12px;
+    color: rgb(0, 0, 0);
+    margin-top: 10px;
+    align-self: end;
+}
+
+.main-content-agendamentos #renderContent .card-especialidade {
+    width: 76%;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid rgba(2, 78, 68, 0.6);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+
+.main-content-agendamentos #renderContent #btnAvançarParaServicos {
+    width: 75%;
+    height: 30px;
+    background: rgb(8, 150, 121);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+
+.main-content-agendamentos #renderContent .card-servico {
+    width: 76%;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid rgba(2, 78, 68, 0.6);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+
+.main-content-agendamentos #renderContent #btnAvançarParaFuncionarios {
+    width: 75%;
+    height: 30px;
+    background: rgb(8, 150, 121);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.main-content-agendamentos #renderContent .card-funcionario {
+    width: 76%;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid rgba(2, 78, 68, 0.6);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+
+.main-content-agendamentos #renderContent #btnAvançarParaHorarios {
+    width: 75%;
+    height: 30px;
+    background: rgb(8, 150, 121);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.main-content-agendamentos #renderContent .card-horario {
+    width: 76%;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid rgba(2, 78, 68, 0.6);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+
+.main-content-agendamentos #renderContent #btnAgendar {
+    width: 75%;
+    height: 30px;
+    background: rgb(8, 150, 121);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.main-content-agendamentos #renderContent .card-horario div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main-content-agendamentos #renderContent #btnAvançarParaMeusAgendamentos{
+    width: 75%;
+    height: 30px;
+    background: rgb(8, 150, 121);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.main-content-agendamentos label{
+    margin-left: 10px;
+}
+
+.main-content-agendamentos #renderContent h1{
+    font-size: 35px;
+}
+
+.main-content-agendamentos #renderContent ul{
+    margin-right: 55px;
+}
+
+.main-content-agendamentos #renderContent li{
+    margin-top: 15px;
+}
