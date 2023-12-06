@@ -29,14 +29,18 @@ const UsuarioModel = sequelize.define('usuarios', {
 
 module.exports = {
     novo: async (nome, email, senha) => {
-        return await UsuarioModel.create({
-            nome_usuario: nome,
-            email_usuario: email,
-            senha_usuario: senha
-        });
+        try {
+            return await UsuarioModel.create({
+                nome_usuario: nome,
+                email_usuario: email,
+                senha_usuario: senha
+            });
+        } catch (error) {
+            throw new Error(error.message);
+        }
     },
     listar: async () => {
-        return await UsuarioModel.findAll();
+        return await UsuarioModel.findAll( { attributes: ['id_usuario', 'nome_usuario', 'email_usuario', 'is_admin'] } );
     },
     makeAdmin: async (id_usuario) => {
         try {
@@ -101,6 +105,17 @@ module.exports = {
                 throw new Error('Usuário não encontrado');
             }
             await usuario.destroy();
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    buscarPorId: async (id_usuario) => {
+        try {
+            const usuario = await UsuarioModel.findByPk(id_usuario);
+            if (!usuario) {
+                throw new Error('Usuário não encontrado');
+            }
+            return usuario;
         } catch (error) {
             throw new Error(error.message);
         }

@@ -45,8 +45,38 @@ module.exports = {
             fone_salao: fone_salao
         })
     },
+
     buscaPorId: async (id_salao) => {
         return await SalaoModel.findByPk(id_salao)
     },
+
+    listar: async () => {
+        return await SalaoModel.findAll()   
+    },
+
+    editar: async (usuario_logado, id_salao, nome_salao, endereco_salao, fone_salao) => {
+        const salaoExiste = await SalaoModel.findByPk(id_salao);
+        if(!salaoExiste) {
+            throw new Error('Salão inexistente');
+        }
+
+        const usuarioehDono = await Usuario.Model.findByPk(usuario_logado);
+        if(usuarioehDono.id_usuario !== salaoExiste.id_dono) {
+            throw new Error('Usuario não é dono');
+            
+        }
+
+        const salao = await SalaoModel.update({
+            nome_salao: nome_salao,
+            endereco_salao: endereco_salao,
+            fone_salao: fone_salao
+        }, {
+            where: {
+                id_salao: id_salao
+            }
+        })
+        return salao;
+    },
+
     Model: SalaoModel
 }

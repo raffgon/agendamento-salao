@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const Usuario = require('../model/Usuario');
 
+require ('dotenv').config();
+
 module.exports = {
     verificaAdmin: async (req, res, next) => {
         if(req.headers.usuario_logado == undefined){
@@ -20,7 +22,7 @@ module.exports = {
             if(token[0] == 'Bearer'){
                 token = token[1];
             }
-            jwt.verify(token, '321@!#', (err, decoded) => {
+            jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
                 if(err){
                     return res.status(401).json({ mensagem: 'Token inválido ou expirado, acesso negado' });
                 }else{

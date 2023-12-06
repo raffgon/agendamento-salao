@@ -11,7 +11,7 @@ const GenericIdSchema = require('../validators/GenericIdValidator');
 const EditarFuncionarioSchema = require('../validators/FuncionarioValidators/EditarFuncionarioValidator');
 const NovoHorarioSchema = require('../validators/FuncionarioValidators/NovoHorariovalidator');
 
-router.post('/novo', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res, next) {
+router.post('/novo', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res) {
   const {error} = NovoFuncionarioSchema.validate(req.body, { abortEarly: false });
   if (error) {
       const errorMessages = error.details.map(detail => detail.message);
@@ -25,86 +25,7 @@ router.post('/novo', Auth.validaAcesso, Auth.verificaAdmin, async function(req, 
   }
 });
 
-router.post('/novaEspecialidade', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res, next) {
-  const {error} = GenericIdSchema.validate(req.body);
-  if (error) {
-    const errorMessages = error.details.map(detail => detail.message);
-    return res.status(400).json({ mensagem: errorMessages });
-  }
-  try {
-    let especialidade = await FuncionarioEspecialidade.novo(req.body.id_funcionario, req.body.id_especialidade);
-    res.json({ mensagem: "Especialidade adicionada com sucesso", especialidade: especialidade });
-  } catch(e) {
-    res.status(400).json({mensagem: "Falha ao salvar especialidade " + e})
-  }
-});
-
-router.post('/novoHorario', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res, next) {
-  const {error} = NovoHorarioSchema.validate(req.body, { abortEarly: false });
-  if (error) {
-    const errorMessages = error.details.map(detail => detail.message);
-    return res.status(400).json({ mensagem: errorMessages });
-  }
-  try {
-    let horario = await Horario.novo(req.body.id_funcionario, req.body.dia_semana_horario, req.body.inicio_horario, req.body.fim_horario, req.body.status_horario);
-    res.json({ mensagem: "Horario criado com sucesso", horario: horario });
-  } catch(e) {
-    res.status(400).json({mensagem: "Falha ao salvar horário " + e})
-  }
-});
-
-router.get('/listarHorariosPorId', Auth.validaAcesso, async function(req, res, next) {
-  const {error} = GenericIdSchema.validate(req.body);
-  if (error) {
-    const errorMessages = error.details.map(detail => detail.message);
-    return res.status(400).json({ mensagem: errorMessages });
-  }
-  try {
-    let horarios = await Horario.getAllbyId(req.body.id_funcionario);
-    res.json({horarios: horarios});
-  } catch(e) {
-    res.status(400).json({mensagem: "Falha ao buscar horários " + e})
-  }
-});
-
-router.post('/listarHorariosDisponiveisPorId', /*Auth.validaAcesso,*/ async function(req, res, next) {
-  const {error} = GenericIdSchema.validate(req.body);
-  if (error) {
-    const errorMessages = error.details.map(detail => detail.message);
-    return res.status(400).json({ mensagem: errorMessages });
-  }
-  try {
-    let horarios = await Horario.getDisponiveisbyId(req.body.id_funcionario);
-    res.json({horarios: horarios});
-  } catch(e) {
-    res.status(400).json({mensagem: "Falha ao buscar horários " + e})
-  }
-});
-
-router.post('/listarFuncionariosPorEspecialidade', async function(req, res, next) {
-  const {error} = GenericIdSchema.validate(req.body);
-  if (error) {
-    const errorMessages = error.details.map(detail => detail.message);
-    return res.status(400).json({ mensagem: errorMessages });
-  }
-  try {
-    let funcionarios = await FuncionarioEspecialidade.getAllByEspecialidade(req.body.id_especialidade);
-    res.json({funcionarios: funcionarios});
-  } catch(e) {
-    res.status(400).json({mensagem: "Falha ao buscar funcionários " + e})
-  }
-});
-
-router.get('/listarTodosHorarios', async function (req, res, next) {
-  try {
-    let horarios = await Horario.listar();
-    res.json({ horarios: horarios });
-  } catch (e) {
-    res.status(400).json({ mensagem: "Falha ao buscar horários" + e })
-  }
-});
-
-router.get('/listar', async function (req, res, next) {
+router.get('/listar', async function (req, res) {
   try {
     let funcionarios = await Funcionario.listar();
     res.json({ funcionarios: funcionarios });
@@ -113,7 +34,21 @@ router.get('/listar', async function (req, res, next) {
   }
 });
 
-router.delete('/excluir', Auth.validaAcesso, Auth.verificaAdmin, async function (req, res, next) {
+router.put('/editar', Auth.validaAcesso, Auth.verificaAdmin, async function (req, res) {
+  const {error} = EditarFuncionarioSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+      const errorMessages = error.details.map(detail => detail.message);
+      return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    let funcionario = await Funcionario.editar(req.body.id_funcionario, req.body.novo_funcionario);
+    res.json({ mensagem: "Funcionario editado com sucesso", funcionario: funcionario });
+  } catch (e) {
+    res.status(400).json({ mensagem: "Falha ao editar funcionario" + e })
+  }
+});
+
+router.delete('/excluir', Auth.validaAcesso, Auth.verificaAdmin, async function (req, res) {
   const {error} = GenericIdSchema.validate(req.body);
   if (error) {
     const errorMessages = error.details.map(detail => detail.message);
@@ -132,17 +67,84 @@ router.delete('/excluir', Auth.validaAcesso, Auth.verificaAdmin, async function 
   }
 });
 
-router.put('/editar', Auth.validaAcesso, Auth.verificaAdmin, async function (req, res, next) {
-  const {error} = EditarFuncionarioSchema.validate(req.body, { abortEarly: false });
+//Define uma nova especialidade para o funcionario
+router.post('/novaEspecialidade', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res) {
+  const {error} = GenericIdSchema.validate(req.body);
   if (error) {
-      const errorMessages = error.details.map(detail => detail.message);
-      return res.status(400).json({ mensagem: errorMessages });
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
   }
   try {
-    let funcionario = await Funcionario.editar(req.body.id_funcionario, req.body.novo_funcionario);
-    res.json({ mensagem: "Funcionario editado com sucesso", funcionario: funcionario });
-  } catch (e) {
-    res.status(400).json({ mensagem: "Falha ao editar funcionario" + e })
+    let especialidade = await FuncionarioEspecialidade.novo(req.body.id_funcionario, req.body.id_especialidade);
+    res.json({ mensagem: "Especialidade adicionada com sucesso", especialidade: especialidade });
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao salvar especialidade " + e})
   }
-})
+});
+
+router.get('/listarFuncionariosPorEspecialidade', async function(req, res) {
+  const {error} = GenericIdSchema.validate(req.body);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    let funcionarios = await FuncionarioEspecialidade.getAllByEspecialidade(req.body.id_especialidade);
+    res.json({funcionarios: funcionarios});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao buscar funcionários " + e})
+  }
+});
+
+router.post('/novoHorario', Auth.validaAcesso, Auth.verificaAdmin, async function(req, res) {
+  const {error} = NovoHorarioSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    let horario = await Horario.novo(req.body.id_funcionario, req.body.dia_semana_horario, req.body.inicio_horario, req.body.fim_horario, req.body.status_horario);
+    res.json({ mensagem: "Horario criado com sucesso", horario: horario });
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao salvar horário " + e})
+  }
+});
+
+router.get('/listarTodosHorarios', async function (req, res) {
+  try {
+    let horarios = await Horario.listar();
+    res.json({ horarios: horarios });
+  } catch (e) {
+    res.status(400).json({ mensagem: "Falha ao buscar horários" + e })
+  }
+});
+
+router.get('/listarHorariosPorId', Auth.validaAcesso, async function(req, res) {
+  const {error} = GenericIdSchema.validate(req.body);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    let horarios = await Horario.getAllbyId(req.body.id_funcionario);
+    res.json({horarios: horarios});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao buscar horários " + e})
+  }
+});
+
+router.get('/listarHorariosDisponiveisPorId', /*Auth.validaAcesso,*/ async function(req, res) {
+  const {error} = GenericIdSchema.validate(req.body);
+  if (error) {
+    const errorMessages = error.details.map(detail => detail.message);
+    return res.status(400).json({ mensagem: errorMessages });
+  }
+  try {
+    let horarios = await Horario.getDisponiveisbyId(req.body.id_funcionario);
+    res.json({horarios: horarios});
+  } catch(e) {
+    res.status(400).json({mensagem: "Falha ao buscar horários " + e})
+  }
+});
+
 module.exports = router;

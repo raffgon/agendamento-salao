@@ -1,12 +1,12 @@
 # Identificar alterações necessarias nos roteadores e implementa-las:
 
 - [x] UsuarioRouter (Nenhuma alteração necessaria)
-- [ ] SalaoRouter
-- [ ] LoginRouter
-- [ ] IndexRouter (Usar o LoginRouter, unificar cadastro e login em apenas um router, remover a logica de verificação se o usuario ja existe da camada dos routers e inserir dentro do modelo Usuairo, implementar o metodo install completo)
-- [ ] FuncionarioRouter 
-- [ ] EspecialidadeRouter
-- [ ] AgendamentoRouter (Implementar tabulação na consulta, Implementar logica de negocios para cancelamentos e novos agendamentos)
+- [x] SalaoRouter
+- [x] LoginRouter
+- [x] IndexRouter (Usar o LoginRouter, unificar cadastro e login em apenas um router, remover a logica de verificação se o usuario ja existe da camada dos routers e inserir dentro do modelo Usuairo, implementar o metodo install completo)
+- [x] FuncionarioRouter 
+- [x] EspecialidadeRouter
+- [x] AgendamentoRouter (Implementar tabulação na consulta, Implementar logica de negocios para cancelamentos e novos agendamentos)
 
 # Fazer verificação dos inputs com Joi
 
@@ -28,10 +28,10 @@
 - [x] /retiraAdmin (a implementar)
 
 ## Salao
-- [ ] /novo (CRUD)
-- [ ] /editar (CRUD) (a implementar)
+- [X] /novo (CRUD)
+- [X] /editar (CRUD) (a implementar)
 - [ ] /excluir (CRUD) (a implementar)
-- [ ] /listar (CRUD) (a implementar)
+- [X] /listar (CRUD) (a implementar)
 
 ## Funcionario
 - [x] /novo (CRUD)

@@ -11,7 +11,6 @@ const GenericIdSchema = require('../validators/GenericIdValidator');
 
 router.get('/listar', async function (req, res, next) {
   try {
-
     let usuarios = await Usuario.listar();
     let pagina = req.query.pagina;
     let limite = req.query.limite;
@@ -21,6 +20,15 @@ router.get('/listar', async function (req, res, next) {
     res.status(400).json({ mensagem: "Falha ao buscar usuarios" + e })
   }
 });
+
+router.get('/meusDados', Auth.validaAcesso, async function (req, res, next) {
+  try {
+    let usuario = await Usuario.buscarPorId(req.headers.usuario_logado);
+    res.json({ usuario: usuario });
+  } catch (e) {
+    res.status(400).json({ mensagem: "Falha ao buscar usuario" + e })
+  }
+})
 
 router.put('/editar', Auth.validaAcesso, async function (req, res) {
   const {error} = EditarUsuarioSchema.validate(req.body, { abortEarly: false });
@@ -58,13 +66,13 @@ router.put('/makeAdmin', Auth.validaAcesso, Auth.verificaAdmin, async function (
   }
   try {
     let usuario = await Usuario.makeAdmin(req.body.id_usuario);
-    res.json({ usuario: usuario });
+    res.json({mensagem: "Privilegio de admin garantido com sucesso", usuario: usuario});
   } catch (e) {
     res.status(400).json({ mensagem: "Falha ao dar permissão de admin: " + e })
   }
 });
 
-router.put('/removeAdmin', async function (req, res, next) {
+router.put('/removeAdmin', Auth.validaAcesso, Auth.verificaAdmin,async function (req, res, next) {
   const {error} = GenericIdSchema.validate(req.body);
   if (error) {
     const errorMessages = error.details.map(detail => detail.message);
@@ -72,7 +80,7 @@ router.put('/removeAdmin', async function (req, res, next) {
   }
   try {
     let usuario = await Usuario.removeAdmin(req.body.id_usuario);
-    res.json({ usuario: usuario });
+    res.json({mensagem: "Privilegio de admin revogado com sucesso", usuario: usuario});
   } catch (e) {
     res.status(400).json({ mensagem: "Falha ao remover permissão de admin: " + e })
   }

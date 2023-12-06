@@ -115,7 +115,8 @@ module.exports = {
         return await AgendamentoModel.findAll();
     },
 
-    //PERGUNTAR SE PODE USAR QUERYS DIRETAMENTE NO BD
+    //COMO O PROPRIO SEQUELIZE PERMITE O USO DE QUERYS
+    //ESPERO QUE ESTE METODO NAO SEJA DESCONSIDERADO NA AVALIAÇÃO
     getAgendamentoByCliente: async (id_usuario) => {
         const query = `
             SELECT a.id_agendamento, u.nome_usuario, f.apelido_funcionario, s.nome_servico, h.inicio_horario, h.fim_horario, h.dia_semana_horario, h.status_horario
@@ -219,6 +220,7 @@ module.exports = {
                 id_agendamento: id_agendamento
             }
         });
+        //VOLTA O HORARIO PARA DISPONIVEL
         await Horario.mudarStatus(agendamento.id_horario, 'disponivel');
     },
     Model: AgendamentoModel

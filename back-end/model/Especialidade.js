@@ -38,7 +38,9 @@ module.exports = {
             nome_especialidade: nome_especialidade
         })
     },
-    /*excluir: async (id_especialidade) => {
+    /*
+        DIFICULDADE NA IMPLEMENTAÇÃO DO METODO DEVIDO A GRANDE QUANTIDADE DE RELACIONAMENTOS ENTRE TABELAS
+    excluir: async (id_especialidade) => {
         try {
             const especialidade = await EspecialidadeModel.findByPk(id_especialidade);
             if (!especialidade) {
@@ -59,5 +61,6 @@ module.exports = {
             throw new Error(error.message);
         }
     },*/
+    
     Model: EspecialidadeModel
 }

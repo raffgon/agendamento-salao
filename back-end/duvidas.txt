@@ -1,6 +1,0 @@
-qual metodologia utilizar para validação dos campos do req.body
-como estabelecer os relacionamentos n pra n
-como exibir os dados das tabelas relacionadas por meio do id
-pode ser utilizada uma query para fazer uma consulta mais elaborada no banco?
-ajuda com dotenv
-PERGUNTAR SE PODE USAR QUERYS DIRETAMENTE NO BD
